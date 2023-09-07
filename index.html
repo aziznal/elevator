@@ -1,0 +1,50 @@
+<html class="h-full">
+  <head>
+    <title>Elevator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="h-full bg-yellow-100">
+    <div class="flex fle-col justify-center items-center h-full">
+      <h1 id="elevator" class="cursor-pointer text-7xl transition duration-[3s]">Elevator</h1>
+    </div>
+  </body>
+
+  <script>
+    /**
+     * @type {HTMLElement}
+     */
+    const elevator = document.getElementById("elevator");
+
+    let isUp = false;
+    let isMoving = false;
+
+    elevator.onclick = () => {
+      if (isMoving) {
+        return;
+      }
+
+      if (isUp) {
+        // move down
+        elevator.style.transform = "translateY(200%)";
+        isUp = !isUp;
+        isMoving = true;
+
+        setTimeout(() => {
+          isMoving = false;
+        }, 3000);
+
+        return;
+      }
+
+      // move up
+      elevator.style.transform = "translateY(-200%)";
+      isMoving = true;
+      isUp = !isUp;
+
+      setTimeout(() => {
+        isMoving = false;
+      }, 3000);
+    };
+  </script>
+</html>
