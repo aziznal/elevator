@@ -4,18 +4,118 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
-  <body class="h-full bg-yellow-100">
-    <div class="flex fle-col justify-center items-center h-full">
-      <h1 id="elevator" class="cursor-pointer text-7xl transition duration-[3s]">Elevator</h1>
+  <body class="h-full bg-yellow-100 relative">
+    <div class="flex justify-center items-center h-full border-black">
+      <div
+        id="elevator"
+        class="cursor-pointer text-7xl transition duration-[3s]"
+      >
+        Elevator
+      </div>
+    </div>
+
+    <div
+      class="flex w-full cursor-pointer [&>*]:w-[300px] h-full justify-center absolute inset-0 transition-all [&>*]:transition-all [&>*]:duration-[2s]"
+    >
+      <div
+        id="left-elevator-door"
+        class="border-r-4 border-l border-l-black border-r-zinc-700 bg-zinc-500"
+      ></div>
+      <div
+        id="right-elevator-door"
+        class="border-l-4 border-r border-r-black border-l-zinc-700 bg-zinc-500"
+      ></div>
     </div>
   </body>
+
+  <style>
+    .open#left-elevator-door {
+      transform: translateX(-100%);
+    }
+
+    .open#right-elevator-door {
+      transform: translateX(100%);
+    }
+
+    .closed#left-elevator-door {
+      transform: translateX(0%);
+    }
+
+    .closed#right-elevator-door {
+      transform: translateX(0%);
+    }
+  </style>
 
   <script>
     /** @type {HTMLElement} */
     const elevator = document.getElementById("elevator");
 
+    const elevatorDoors = {
+      /** @type {HTMLElement} */
+      leftDoor: document.getElementById("left-elevator-door"),
+
+      /** @type {HTMLElement} */
+      rightDoor: document.getElementById("right-elevator-door"),
+
+      /** @type {HTMLElement[]} */
+      doors: [
+        document.getElementById("left-elevator-door"),
+        document.getElementById("right-elevator-door"),
+      ],
+    };
+
     let isUp = false;
     let isMoving = false;
+    let isDoorOpen = false;
+
+    const openDoors = () => {
+      if (isMoving) {
+        return;
+      }
+
+      elevatorDoors.leftDoor.classList.add("open");
+      elevatorDoors.rightDoor.classList.add("open");
+
+      elevatorDoors.leftDoor.classList.remove("closed");
+      elevatorDoors.rightDoor.classList.remove("closed");
+    };
+
+    const closeDoors = () => {
+      if (isMoving) {
+        return;
+      }
+
+      elevatorDoors.leftDoor.classList.add("closed");
+      elevatorDoors.rightDoor.classList.add("closed");
+
+      elevatorDoors.leftDoor.classList.remove("open");
+      elevatorDoors.rightDoor.classList.remove("open");
+    };
+
+    const toggleDoors = () => {
+      if (isMoving) {
+        return;
+      }
+
+      if (isDoorOpen) {
+        closeDoors();
+        isDoorOpen = !isDoorOpen;
+        return;
+      }
+
+      openDoors();
+      isDoorOpen = !isDoorOpen;
+    };
+
+    elevatorDoors.doors.forEach((elevatorDoor) => {
+      elevatorDoor.onclick = () => {
+        if (isMoving) {
+          return;
+        }
+
+        toggleDoors();
+      };
+    });
 
     elevator.onclick = () => {
       if (isMoving) {
