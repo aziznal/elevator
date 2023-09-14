@@ -107,6 +107,26 @@
       isDoorOpen = !isDoorOpen;
     };
 
+    const moveUp = () => {
+      elevator.style.transform = "translateY(-200%)";
+      isMoving = true;
+      isUp = !isUp;
+
+      setTimeout(() => {
+        isMoving = false;
+      }, 3000);
+    };
+
+    const moveDown = () => {
+      elevator.style.transform = "translateY(200%)";
+      isUp = !isUp;
+      isMoving = true;
+
+      setTimeout(() => {
+        isMoving = false;
+      }, 3000);
+    };
+
     elevatorDoors.doors.forEach((elevatorDoor) => {
       elevatorDoor.onclick = () => {
         if (isMoving) {
@@ -122,27 +142,9 @@
         return;
       }
 
-      if (isUp) {
-        // move down
-        elevator.style.transform = "translateY(200%)";
-        isUp = !isUp;
-        isMoving = true;
+      if (isUp) return moveDown();
 
-        setTimeout(() => {
-          isMoving = false;
-        }, 3000);
-
-        return;
-      }
-
-      // move up
-      elevator.style.transform = "translateY(-200%)";
-      isMoving = true;
-      isUp = !isUp;
-
-      setTimeout(() => {
-        isMoving = false;
-      }, 3000);
+      return moveUp();
     };
   </script>
 </html>
